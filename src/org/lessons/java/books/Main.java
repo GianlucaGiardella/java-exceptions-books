@@ -1,5 +1,9 @@
 package org.lessons.java.books;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -57,11 +61,34 @@ public class Main {
             System.out.println("- Libro creato con successo!");
         }
 
-        System.out.println("\n- Libri creati: ");
-        for (Book book : books) {
-            System.out.println(book);
+        scan.close();
+
+        FileWriter fileWriter = null;
+        try {
+            fileWriter = new FileWriter("./resources/libri.txt");
+            for (Book book : books) {
+                fileWriter.write(book.toString() + "\n");
+            }
+        } catch (IOException e) {
+            System.out.println("\n- Impossibile scrivere nel file");
+        } finally {
+            try {
+                if (fileWriter != null) {
+                    System.out.println("\n- Libri aggiunti al file");
+                    fileWriter.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 
-        scan.close();
+        try (Scanner fileReader = new Scanner(new File("./resources/libri.txt"))) {
+            while (fileReader.hasNextLine()) {
+                String line = fileReader.nextLine();
+                System.out.println(line);
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("\n- File non troavto");
+        }
     }
 }
