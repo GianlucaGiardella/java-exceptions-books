@@ -63,32 +63,21 @@ public class Main {
 
         scan.close();
 
-        FileWriter fileWriter = null;
-        try {
-            fileWriter = new FileWriter("./resources/libri.txt");
+        try (FileWriter fileWriter = new FileWriter("./resources/books.txt")){
             for (Book book : books) {
                 fileWriter.write(book.toString() + "\n");
             }
         } catch (IOException e) {
             System.out.println("\n- Impossibile scrivere nel file");
-        } finally {
-            try {
-                if (fileWriter != null) {
-                    System.out.println("\n- Libri aggiunti al file");
-                    fileWriter.close();
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
-        try (Scanner fileReader = new Scanner(new File("./resources/libri.txt"))) {
+        try (Scanner fileReader = new Scanner(new File("./resources/books.txt"))) {
             while (fileReader.hasNextLine()) {
                 String line = fileReader.nextLine();
                 System.out.println(line);
             }
         } catch (FileNotFoundException e) {
-            System.out.println("\n- File non troavto");
+            System.out.println("\n- File non trovato");
         }
     }
 }
