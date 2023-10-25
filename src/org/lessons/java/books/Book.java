@@ -7,10 +7,15 @@ public class Book {
     private String editor;
 
     public Book(String title, int pages, String author, String editor) throws IllegalArgumentException {
-        validateTitle(title);
-        validatePages(pages);
-        validateAuthor(author);
-        validateEditor(editor);
+        validateString(title, "Titolo");
+        validatePositiveNumber(pages, "Il numero di pagine");
+        validateString(author, "Autore");
+        validateString(editor, "Editore");
+
+        this.title = title;
+        this.pages = pages;
+        this.author = author;
+        this.editor = editor;
     }
 
     public String getTitle() {
@@ -26,42 +31,33 @@ public class Book {
         return editor;
     }
 
-    public void setTitle(String title) {
-        validateTitle(title);
-    }
-    public void setPages(int pages) {
-        validatePages(pages);
-    }
-    public void setAuthor(String author) {
-        validateAuthor(author);
-    }
-    public void setEditor(String editor) {
-        validateEditor(editor);
-    }
-
-    private void validateTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("Titolo non valido");
-        }
+    public void setTitle(String title) throws IllegalArgumentException {
+        validateString(title, "Titolo");
         this.title = title;
     }
-    private void validatePages(int pages) {
-        if (pages < 1) {
-            throw new IllegalArgumentException("Numero pagine maggiore di 0");
-        }
+    public void setPages(int pages) throws IllegalArgumentException {
+        validatePositiveNumber(pages, "Numero");
         this.pages = pages;
     }
-    private void validateAuthor(String author) {
-        if (author == null || author.trim().isEmpty()) {
-            throw new IllegalArgumentException("Autore non valido");
-        }
+    public void setAuthor(String author) throws IllegalArgumentException {
+        validateString(author, "Autore");
         this.author = author;
     }
-    private void validateEditor(String editor) {
-        if (editor == null || editor.trim().isEmpty()) {
-            throw new IllegalArgumentException("Editore non valido");
-        }
+    public void setEditor(String editor) throws IllegalArgumentException {
+        validateString(editor, "Editore");
         this.editor = editor;
+    }
+
+    private void validateString(String inputString, String stringName) throws IllegalArgumentException {
+        if (inputString == null || inputString.isBlank()) {
+            throw new IllegalArgumentException(stringName + " è null o vuoto");
+        }
+    }
+
+    private void validatePositiveNumber(int number, String stringName) throws IllegalArgumentException {
+        if (number < 1) {
+            throw new IllegalArgumentException(stringName + " è minore di 1");
+        }
     }
 
     @Override
